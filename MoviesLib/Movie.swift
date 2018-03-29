@@ -15,6 +15,28 @@ struct Movie: Codable {
     let duration: String
     let rating: Double
     let summary: String
-    let image_name: String
+    let imageName: String
+    
+    var imageSmall: String {
+        return imageName + "-small.jpg"
+    }
+    
+    var imageWide: String {
+        return imageName + "-wide.jpg"
+    }
+    
+    var categoriesDescription: String {
+        return categories.joined(separator: " | ")
+    }
+    
+    // Usado para fazer um de para dos atributos com as chaves no json
+    enum CodingKeys: String, CodingKey {
+        case title
+        case categories
+        case duration
+        case rating
+        case summary
+        case imageName = "image_name"
+    }
     
 }

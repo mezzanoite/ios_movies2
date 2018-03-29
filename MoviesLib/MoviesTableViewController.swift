@@ -24,6 +24,13 @@ class MoviesTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! MovieViewController
+        guard let row = tableView.indexPathForSelectedRow?.row else {return}
+        let movie = movies[row]
+        vc.movie = movie
+    }
+    
     func loadLocalJSON() {
         guard let jsonURL = Bundle.main.url(forResource: "movies", withExtension: "json"),
             let data = try? Data(contentsOf: jsonURL) else {return}
@@ -52,12 +59,13 @@ class MoviesTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         let movie = movies[indexPath.row]
-        cell.textLabel?.text = movie.title
-        cell.detailTextLabel?.text = movie.summary
+        cell.prepare(with: movie)
         return cell
     }
+    
+    
     
 
     /*
